@@ -101,6 +101,7 @@ export function useChat(
                 })
               )
             } else if (event.type === 'subagent_start') {
+              if (!event.id) continue
               setMessages(prev =>
                 prev.map(m => {
                   if (m.id !== assistantId) return m
@@ -157,6 +158,7 @@ export function useChat(
                     subAgents: (m.subAgents ?? []).map(sa => {
                       if (sa.id !== event.id) return sa
                       const calls = [...sa.toolCalls]
+                      // Assumes backend emits tool_call before tool_result sequentially.
                       const lastIdx = calls.length - 1
                       if (lastIdx >= 0) {
                         calls[lastIdx] = {
@@ -210,11 +212,17 @@ export function useChat(
       }
     } catch {
       setMessages(prev =>
-        prev.map(m =>
-          m.id === assistantId
-            ? { ...m, content: 'Failed to get response.', isStreaming: false }
-            : m
-        )
+        prev.map(m => {
+          if (m.id !== assistantId) return m
+          return {
+            ...m,
+            content: m.content || 'Failed to get response.',
+            isStreaming: false,
+            subAgents: (m.subAgents ?? []).map(sa =>
+              sa.isDone ? sa : { ...sa, isDone: true }
+            ),
+          }
+        })
       )
     } finally {
       setIsStreaming(false)
