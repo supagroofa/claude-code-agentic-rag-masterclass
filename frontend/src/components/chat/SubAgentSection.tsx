@@ -9,12 +9,13 @@ interface Props {
 export function SubAgentSection({ agent }: Props) {
   const [isOpen, setIsOpen] = useState(true)
 
-  const taskLabel = agent.task.length > 60 ? agent.task.slice(0, 60) + '…' : agent.task
+  const taskLabel = agent.task
 
   return (
     <div className="mt-2 rounded-lg border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/30">
       <button
         onClick={() => setIsOpen(prev => !prev)}
+        aria-expanded={isOpen}
         className="flex items-center gap-2 w-full px-3 py-2 text-left hover:bg-purple-100 dark:hover:bg-purple-900/20 rounded-lg transition-colors"
       >
         <svg
@@ -22,6 +23,7 @@ export function SubAgentSection({ agent }: Props) {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
             d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15M14.25 3.104c.251.023.501.05.75.082M19.8 15l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.5l1.196 4.783A2.25 2.25 0 0118.8 21.75H5.2a2.25 2.25 0 01-2.196-1.967L4 14.5"
@@ -38,6 +40,7 @@ export function SubAgentSection({ agent }: Props) {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>

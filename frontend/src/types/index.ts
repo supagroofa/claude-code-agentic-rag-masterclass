@@ -47,9 +47,9 @@ export interface SubAgentToolCall {
 export interface SubAgent {
   id: string
   task: string
-  reasoning: string
+  reasoning?: string
   toolCalls: SubAgentToolCall[]
-  summary: string
+  summary?: string
   isDone: boolean
 }
 
