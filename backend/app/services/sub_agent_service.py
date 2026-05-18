@@ -116,7 +116,8 @@ async def run_sub_agent(task: str, user_id: str) -> AsyncGenerator[dict, None]:
                     if tc.function and tc.function.arguments:
                         tool_calls_raw[tc.index]["function"]["arguments"] += tc.function.arguments
 
-        final_text = full_text
+        if full_text:
+            final_text = full_text
 
         if last_finish_reason != "tool_calls" or not tool_calls_raw:
             break

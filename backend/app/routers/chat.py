@@ -327,6 +327,8 @@ async def _stream_chat(thread_id: str, content: str, user_id: str) -> AsyncGener
             messages.append({"role": "assistant", "tool_calls": tool_calls_raw})
             messages.extend(tool_results)
 
+            # Second pass: no tools — LLM synthesises from tool results only.
+            # Sub-agents handle multi-round retrieval; main agent always ends here.
             stream2 = await stream_chat_completion(messages)
             async for chunk in stream2:
                 delta = chunk.choices[0].delta
