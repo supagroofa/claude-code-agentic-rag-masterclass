@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import AsyncIterator
+from typing import AsyncGenerator
 from app.services.llm_client import stream_chat_completion
 from app.services.retrieval_service import search_documents
 from app.services.web_search_service import search_web, is_web_search_enabled
@@ -74,7 +74,7 @@ def _format_chunk(c: dict) -> str:
     return "\n".join(parts)
 
 
-async def run_sub_agent(task: str, user_id: str) -> AsyncIterator[dict]:
+async def run_sub_agent(task: str, user_id: str) -> AsyncGenerator[dict, None]:
     agent_id = f"sa_{uuid.uuid4().hex[:8]}"
     yield {"type": "subagent_start", "id": agent_id, "task": task}
 
